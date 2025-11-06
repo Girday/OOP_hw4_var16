@@ -18,6 +18,36 @@ public:
         calculatePoints(center, vertex);
     }
 
+    Octagon(const Octagon& other) {
+        for (int i = 0; i < 8; ++i)
+            points[i] = std::make_unique<Point<T>>(*other.points[i]);
+    }
+
+    Octagon& operator=(const Octagon& other) {
+        if (this == &other)
+            return *this;
+        
+        for (int i = 0; i < 8; ++i)
+            points[i] = std::make_unique<Point<T>>(*other.points[i]);
+        
+        return *this;
+    }
+
+    Octagon(Octagon&& other) noexcept {
+        for (int i = 0; i < 8; ++i)
+            points[i] = std::move(other.points[i]);
+    }
+
+    Octagon& operator=(Octagon&& other) noexcept {
+        if (this == &other)
+            return *this;
+        
+        for (int i = 0; i < 8; ++i)
+            points[i] = std::move(other.points[i]);
+        
+        return *this;
+    }
+
     Point<T> center() const override {
         T sumX{0}, sumY{0};
 
@@ -35,7 +65,7 @@ public:
         return static_cast<double>(2 * (1 + std::sqrt(2)) * side * side);
     }
 
-    bool operator==(const Figure<T>& other) const override {
+    bool equals(const Figure<T>& other) const override {
         const auto* otherOctagon = dynamic_cast<const Octagon<T>*>(&other);
         
         if (!otherOctagon)

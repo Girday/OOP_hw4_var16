@@ -11,7 +11,11 @@ public:
 
     virtual Point<T> center() const = 0;
     virtual operator double() const = 0;
-    virtual bool operator==(const Figure<T>& other) const = 0;
+    virtual bool equals(const Figure<T>& other) const = 0;
+
+    bool operator==(const Figure<T>& other) const {
+        return equals(other);
+    }
 
     friend std::ostream& operator<<(std::ostream& os, const Figure<T>& fig) {
         fig.print(os);
